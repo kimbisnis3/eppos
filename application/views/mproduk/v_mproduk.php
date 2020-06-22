@@ -18,10 +18,6 @@
                   <button type="button" class="btn btn-primary btn-flat elm-add" name="button" onclick="add_data()"><i class="fa fa-plus"></i> Tambah</button>
                   <button type="button" class="btn btn-warning btn-flat" name="button" onclick="exp('uploads/template/template_csv_produk.csv')" id="btn_csv"><i class="fa fa-download"></i> Import</button>
                 </div>
-                <div class="float-right">
-                  <button type="button" class="btn btn-danger btn-flat" name="button" onclick="hapus_confirm()"><i class="fa fa-trash"></i> Hapus</button>
-                  <button type="button" class="btn btn-success btn-flat" name="button" onclick="aktif_confirm()"><i class="fa fa-check"></i> Aktif / Non Aktif</button>
-                </div>
               </div>
               <div class="invisible">
                   <form id="form-file">

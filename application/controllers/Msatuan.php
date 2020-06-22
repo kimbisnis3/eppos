@@ -43,7 +43,7 @@ class Msatuan extends CI_Controller {
         echo json_encode($r);
     }
 
-    public function edit()
+    public function getrow()
     {
         $w['id']= epost('id');
         $data   = db_get_where($this->table,$w)->row();

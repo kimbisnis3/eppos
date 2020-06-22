@@ -106,15 +106,15 @@
           data: $(form).serializeArray(),
           dataType: "JSON",
           success: function(data) {
-              if (data.sukses == 'success') {
+              if (data.status == 'success') {
                   $(modal).modal('hide');
                   refresh();
                   toastr.success('Data Berhasil Disimpan')
-              } else if (data.sukses == 'fail') {
+              } else if (data.status == 'fail') {
                   $(modal).modal('hide');
                   refresh();
                   toastr.success('No Changed')
-              } else if (data.sukses == 'duplicated') {
+              } else if (data.status == 'duplicated') {
                   refresh();
                   toastr.error('Username Sudah Digunakan')
               }
@@ -137,15 +137,15 @@
             cache: false,
             processData: false,
             success: function(data) {
-                if (data.sukses == 'success') {
+                if (data.status == 'success') {
                     $(modal).modal('hide');
                     refresh();
                     toastr.success('Data Berhasil Disimpan')
-                } else if (data.sukses == 'fail') {
+                } else if (data.status == 'fail') {
                     $(modal).modal('hide');
                     refresh();
                     toastr.success('No Changed')
-                } else if (data.sukses == 'duplicated') {
+                } else if (data.status == 'duplicated') {
                     refresh();
                     toastr.error('Username Sudah Digunakan')
                 }
@@ -175,10 +175,10 @@
             keys: ['enter'],
             action: function(){
               $.post(url, { id: id }, function(data) {
-                if (data.sukses == 'success') {
+                if (data.status == 'success') {
                     refresh();
                     toastr.success('Data Berhasil Dihapus')
-                } else if (data.sukses == 'fail') {
+                } else if (data.status == 'fail') {
                     refresh();
                     toastr.error('Data Gagal Dihapus')
                 }
@@ -208,10 +208,10 @@
             keys: ['enter'],
             action: function(){
               $.post(url, { id: id }, function(data) {
-                if (data.sukses == 'success') {
+                if (data.status == 'success') {
                     refresh();
                     toastr.success('Data Berhasil Dihapus')
-                } else if (data.sukses == 'fail') {
+                } else if (data.status == 'fail') {
                     refresh();
                     toastr.error('Data Gagal Dihapus')
                 }
