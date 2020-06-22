@@ -109,6 +109,7 @@
       $('#form-data')[0].reset();
       $('#img-preview').remove();
       $('.select2').trigger('change');
+      $('[name="stok"]').prop('readonly', false)
       $('#modal-data').modal('show');
       $('#modal-data .modal-title').text('Tambah Data');
   }
@@ -129,6 +130,7 @@
                 $(`#form-data [name="${i}"]`).val(data[i])
               })
               $('.select2').trigger('change');
+              $('[name="stok"]').prop('readonly', true)
               $('#modal-data').modal('show');
               $('#modal-data .modal-title').text('Edit Data');
           },

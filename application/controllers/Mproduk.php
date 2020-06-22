@@ -101,7 +101,7 @@ class Mproduk extends CI_Controller {
           $d['nama']            = epost('nama');
           $d['berat']           = epost('berat');
           $d['brand']           = epost('brand');
-          $d['stok']            = epost('stok');
+          // $d['stok']            = epost('stok');
           $d['ref_ktgproduk']   = epost('ref_ktgproduk');
           $d['ref_subktgproduk']= epost('ref_subktgproduk');
           $d['harga']           = epost('harga');
