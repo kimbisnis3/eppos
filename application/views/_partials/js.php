@@ -1,5 +1,14 @@
 <script type="text/javascript">
     var php_base_url = '<?php echo base_url() ?>';
+    var akses_btn     = <?php echo getakses($this->uri->segment(1)) ?>;
+
+    function btn_allow(val, btn) {
+       if (val == 1) {
+         return btn
+       } else {
+         return ''
+       }
+    }
 
     $(function() {
       toastr.options = {

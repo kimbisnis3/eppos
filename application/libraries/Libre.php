@@ -33,7 +33,9 @@ class libre
                ref_level = '$akses'
               AND mmenu.url = '$url'";
         $count = db_query($q)->num_rows();
-        if ($count <= 0) { redirect('landing'); }
+        if (datauser('super') != 1) {
+          if ($count <= 0) { redirect('landing'); }
+        }
     }
 
     public function sessakses()

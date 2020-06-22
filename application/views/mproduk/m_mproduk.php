@@ -86,4 +86,19 @@
     </div>
   </div>
 </div>
+<div class="modal fade" id="modal-img" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Default Modal</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="span-img"></div>
+      </div>
+    </div>
+  </div>
+</div>
 <?php $this->load->view('_partials/modal_konfirmasi') ?>

@@ -43,7 +43,7 @@ class Auth extends CI_Controller{
             $d['nama']    = $result->nama;
             $d['username']= $result->username;
             $d['image']   = $result->image;
-            $d['akses']   = $result->level;;
+            $d['akses']   = $result->level;
             $this->session->set_userdata($d);
             $this->lastlogin($result->id);
             echo json_encode($this->respon(1));

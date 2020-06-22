@@ -32,7 +32,7 @@
             { "title" : "Nama", "data": "nama" },
             { "title" : "Kategori", "data": "mktgproduk_nama" },
             { "title" : "Harga", "render" : (data,type,row,meta) => {return angka(row.harga)} },
-            { "title" : "Gambar", "render" : (data,type,row,meta) => { return showimage(row.image) } },
+            { "title" : "Gambar", "render" : (data,type,row,meta) => { return `<button type="button" class="btn btn-primary" onclick="img_data(${row.id})"><i class="fa fa-image"></i></button>` } },
             { "title" : "Stok", "data": "stok" },
             { "title" : "Satuan", "data": "satuan" },
             { "title" : "Keterangan", "data": "ket" },
@@ -102,6 +102,26 @@
    function refresh() {
       table.ajax.reload(null, false);
       idx = -1;
+  }
+
+  function img_data(id) {
+      $('#img-produk').remove()
+      $.ajax({
+          url: `${apiurl}/getrow`,
+          type: "POST",
+          dataType: "JSON",
+          data: {
+              id: id,
+          },
+          success: function(data) {
+              $('#span-img').append(`<img id="img-produk" onerror="this.src='${php_base_url}assets/gambar/noimage.png'" class="img-fluid" src="<?php echo base_url() ?>${data.image}"/>`)
+              $('#modal-img .modal-title').text('Gambar')
+              $('#modal-img').modal('show')
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+              toastr.error('Internal Error')
+          }
+      });
   }
 
   function add_data() {

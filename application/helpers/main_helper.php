@@ -4,27 +4,27 @@ if (!function_exists('main')) {
 
     function getakses($url)
     {
-        // $url   = eget('url');
         $level = sessdata('akses');
         $q = "SELECT
-                mmenu.nama menu,
-                mmenu.url,
-                mlevel.nama levelname,
-                makses.ref_level,
-                makses.add,
-                makses.edit,
-                makses.del
+              	mmenu.nama menu,
+              	mmenu.url,
+              	mlevel.nama levelname,
+              	makses.ref_level,
+              	makses.add,
+              	makses.edit,
+              	makses.del,
+              	makses.option,
+              	makses.other
               FROM
-                makses
-                LEFT JOIN mmenu ON mmenu.id = makses.ref_menu
-                LEFT JOIN mlevel ON mlevel.kode = makses.ref_level
-                LEFT JOIN mindukmenu ON mindukmenu.kode = mmenu.ref_indukmenu
+              	makses
+              	LEFT JOIN mmenu ON mmenu.id = makses.ref_menu
+              	LEFT JOIN mlevel ON mlevel.id = makses.ref_level
               WHERE
-                mmenu.aktif = '1'
-              AND mlevel.kode = '$level'
-              AND mmenu.url = '$url'";
+              	1 = 1
+              	AND mlevel.id = '$level'
+              	AND mmenu.url = '$url'";
         $result  = db_query($q)->row_array();
-        return $result;
+        return json_encode($result);
     }
 
     function datauser($param)
@@ -43,6 +43,25 @@ if (!function_exists('main')) {
               AND muser.id = '$iduser'";
         $result = db_query($q)->row_array();
         return $result[$param];
+    }
+
+    function menucheck($kode)
+    {
+        $ci =& get_instance();
+        $level = sessdata('akses');
+        $q  = "SELECT
+              count(*) jml
+            FROM
+            	makses
+            	JOIN mmenu ON mmenu.id = makses.ref_menu
+            	JOIN mindukmenu ON mindukmenu.kode = mmenu.ref_indukmenu
+            WHERE
+            	1 = 1
+            	AND mmenu.aktif = '1'
+            	AND makses.ref_level = '$level'
+            	AND mindukmenu.kode = '$kode'";
+        $result = db_query($q)->row_array()['jml'];
+        return $result;
     }
 
     function compdata($param)

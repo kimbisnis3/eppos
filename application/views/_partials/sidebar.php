@@ -1,6 +1,7 @@
 <?php
   $akses = sessdata('akses');
   $q_menuinduk = "SELECT * FROM (SELECT
+                    mindukmenu.id,
                   	mindukmenu.kode,
                   	mindukmenu.nama,
                   	mindukmenu.icon,
@@ -16,6 +17,7 @@
                   	AND mindukmenu.aktif = 1
                   	UNION ALL
                   SELECT
+                  	mmenu.id,
                   	mmenu.kode,
                   	mmenu.nama,
                   	mmenu.icon,
@@ -65,7 +67,7 @@
               <ul class="nav nav-treeview">
                 <?php
                   $kodeinduk= $v['kode'];
-                  $akses = sessdata('akses');
+                  $akses  = sessdata('akses');
                   $q_menu = "SELECT DISTINCT
                     mmenu.*
                     FROM mmenu
@@ -74,7 +76,7 @@
                   1 = 1
                   AND mmenu.ref_indukmenu = '$kodeinduk'
                   AND mmenu.aktif = '1'";
-                  if (sessdata('super') != 1) {
+                  if (datauser('super') != 1) {
                     $q_menu .= " AND makses.ref_level = '$akses'";
                   }
                   $q_menu .= " ORDER BY urutan ASC";
