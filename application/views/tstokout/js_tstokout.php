@@ -28,7 +28,7 @@
             { "title" : "Tanggal ",  "render" : (data,type,row,meta) => {return tanggal(row.tgl) } },
             { "title" : "Kode", "data": "kodeproduk" },
             { "title" : "Produk", "data": "produk" },
-            { "title" : "Qty ", "data": "qty" },
+            { "title" : "Qty ", "render" : (data,type,row,meta) => {return `<div class="text-right">${row.qty}</div>` } },
             { "title" : "Supplier", "data": "supplier" },
             { "title" : "Keterangan", "data": "desc" },
             { "title" : "Opsi", "width" : "8%", "render" : (data,type,row,meta) =>
@@ -101,9 +101,9 @@
 
   function savedata() {
       if (
-        !$('[name="tgl"]').val() || !$('[name="tgl"]').val() ||
-        !$('[name="ref_produk"]').val() || !$('[name="ref_produk"]').val() ||
-        !$('[name="qty"]').val() || !$('[name="qty"]').val()
+        !$('[name="tgl"]').val() || $('[name="tgl"]').val() == '' ||
+        !$('[name="ref_produk"]').val() || $('[name="ref_produk"]').val() == '' ||
+        !$('[name="qty"]').val() || $('[name="qty"]').val() == ''
       )
       {
         toastr.error('Lengkapi Data');

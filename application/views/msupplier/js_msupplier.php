@@ -69,9 +69,9 @@
 
   function savedata() {
       if (
-        !$('[name="nama"]').val() || !$('[name="nama"]').val() ||
-        !$('[name="alamat"]').val() || !$('[name="alamat"]').val() ||
-        !$('[name="hp"]').val() || !$('[name="hp"]').val()
+        !$('[name="nama"]').val() || $('[name="nama"]').val() == '' ||
+        !$('[name="alamat"]').val() || $('[name="alamat"]').val() == '' ||
+        !$('[name="hp"]').val() || $('[name="hp"]').val()
       )
       {
         toastr.error('Lengkapi Data');

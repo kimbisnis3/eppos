@@ -1,22 +1,28 @@
 <?php
-  $akses = sessdata('akses');
-  $q_menuinduk = "SELECT * FROM (SELECT
+  $akses        = sessdata('akses');
+  $join_akses   = datauser("super") != 1 ? "JOIN makses ON makses.ref_menu = mmenu.id" : "";
+  $where_akses  = datauser("super") != 1 ? "AND makses.ref_level = '$akses'" : "";
+  $q_menuinduk  = "SELECT * FROM (
+                  SELECT DISTINCT
                     mindukmenu.id,
-                  	mindukmenu.kode,
-                  	mindukmenu.nama,
-                  	mindukmenu.icon,
-                  	mindukmenu.class,
-                  	mindukmenu.urutan,
-                  	mindukmenu.aktif,
-                  	mindukmenu.url,
-                  	1 tipe
+                    mindukmenu.kode,
+                    mindukmenu.nama,
+                    mindukmenu.icon,
+                    mindukmenu.class,
+                    mindukmenu.urutan,
+                    mindukmenu.aktif,
+                    mindukmenu.url,
+                    1 tipe
                   FROM
-                  	mindukmenu
+                  mindukmenu
+                  LEFT JOIN mmenu ON mmenu.ref_indukmenu = mindukmenu.kode
+                  $join_akses
                   WHERE
-                  	1 = 1
-                  	AND mindukmenu.aktif = 1
+                  1 = 1
+                  AND mmenu.aktif = 1
+                  $where_akses
                   	UNION ALL
-                  SELECT
+                  SELECT DISTINCT
                   	mmenu.id,
                   	mmenu.kode,
                   	mmenu.nama,
@@ -28,24 +34,25 @@
                   	2 tipe
                   FROM
                   	mmenu
+                  $join_akses
                   WHERE
                   	1 = 1
                   	AND mmenu.aktif = 1
-                  	AND mmenu.ref_indukmenu = 'N') x";
+                  	AND mmenu.ref_indukmenu = 'N'
+                  	$where_akses) x";
   $q_menuinduk .= " ORDER BY urutan ASC";
   $menuinduk= db_query($q_menuinduk)->result_array();
  ?>
 <aside class="main-sidebar sidebar-dark-success elevation-4">
   <a href="<?php echo base_url() ?>landing" class="brand-link">
-    <img src="<?php echo base_url().compdata('image') ?>" alt="Logo" class="brand-image img-circle elevation-3"
-         style="opacity: .8">
+    <img src="<?php echo base_url().compdata('image') ?>" alt="Logo" class="brand-image img-circle elevation-3" onerror="this.src='<?php echo base_url(); ?>assets/gambar/noimage.png'" style="opacity: .8">
     <span class="brand-text font-weight-light"><?php echo compdata('nama') ?></span>
   </a>
 
   <div class="sidebar">
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
       <div class="image">
-        <img src="<?php echo base_url().datauser('image') ?>" class="img-circle elevation-2" id="user-img-sidebar" alt="User Image">
+        <img src="<?php echo base_url().datauser('image') ?>" class="img-circle elevation-2" id="user-img-sidebar" alt="User Image" onerror="this.src='<?php echo base_url(); ?>assets/gambar/noimage.png'">
       </div>
       <div class="info">
         <a class="d-block"><?php echo datauser('nama')." ( ".datauser('namalevel')." )" ?></a>

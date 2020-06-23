@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="<?php echo base_url() ?>assets/lte/plugins/fontawesome-free/css/all.min.css">
   <link rel="stylesheet" href="<?php echo base_url() ?>assets/lte/plugins/datatables-bs4/css/dataTables.bootstrap4.css">
-  <link rel="stylesheet" href="<?php echo base_url() ?>assets/lte/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="<?php echo base_url() ?>assets/lte/dist/css/adminlte303.min.css">
   <link rel="stylesheet" href="<?php echo base_url() ?>assets/lte/plugins/jquery-ui/jquery-ui.min.css">
   <link rel="stylesheet" href="<?php echo base_url() ?>assets/lte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
@@ -24,7 +24,8 @@
   <script src="<?php echo base_url() ?>assets/lte/plugins/datatables/jquery.dataTables.js"></script>
   <script src="<?php echo base_url() ?>assets/lte/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
   <script src="<?php echo base_url() ?>assets/lte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-  <script src="<?php echo base_url() ?>assets/lte/dist/js/adminlte.js"></script>
+  <!-- <script src="<?php echo base_url() ?>assets/lte/dist/js/adminlte.js"></script> -->
+  <script src="<?php echo base_url() ?>assets/lte/dist/js/adminlte303.min.js"></script>
   <script src="<?php echo base_url() ?>assets/lte/dist/js/demo.js"></script>
   <script src="<?php echo base_url() ?>assets/lte/plugins/toastr/toastr.min.js"></script>
   <script src="<?php echo base_url() ?>assets/lte/plugins/select2/js/select2.full.min.js"></script>
@@ -77,6 +78,18 @@
       .table td,
       .table th {
               padding: .4rem !important;
+      }
+
+      /* Chrome, Safari, Edge, Opera */
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      /* Firefox */
+      input[type=number] {
+        -moz-appearance: textfield;
       }
 
   </style>

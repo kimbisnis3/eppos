@@ -56,6 +56,7 @@ class Tstokout extends CI_Controller {
     {
         $this->db->trans_start();
         $d['useri']           = sessdata('username');
+        $d['ref_user']        = sessdata('iduser');
         $d['datei']           = sekarang();
         $d['tgl']             = todate(epost('tgl'));
         $d['ref_produk']      = epost('ref_produk');

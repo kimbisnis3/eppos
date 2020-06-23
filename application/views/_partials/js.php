@@ -10,6 +10,18 @@
        }
     }
 
+    $(document).keypress(function(e) {
+      if(e.which == 13) {
+        if ($('#modal-data').is(':visible')) {
+          savedata()
+        }
+      }
+    });
+
+    $(document).on("wheel", "input[type=number]", function (e) {
+        $(this).blur();
+    });
+
     $(function() {
       toastr.options = {
         "timeOut": 1500
