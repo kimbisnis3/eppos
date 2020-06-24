@@ -6,6 +6,11 @@
   var state;
   var table ;
   var arr_produk = [] ;
+  var total_harga = 0
+  var total_qty = 0
+  var total_all = 0
+  var total_final = 0
+  var cashback = 0
 
    $(function() {
      getdata()
@@ -58,13 +63,25 @@
 
   function refresh() {
       table.clear().rows.add(arr_produk).draw();
-      let total_harga = _.sumBy(arr_produk, function(o) { return parseFloat(parseInt(o.harga)) });
-      let total_qty   = _.sumBy(arr_produk, function(o) { return parseFloat(parseInt(o.qty)) });
-      let total_all   = _.sumBy(arr_produk, function(o) { return parseFloat(parseInt(o.harga) * parseInt(o.qty)) });
+      total_harga = _.sumBy(arr_produk, function(o) { return parseFloat(parseInt(o.harga)) });
+      total_qty   = _.sumBy(arr_produk, function(o) { return parseFloat(parseInt(o.qty)) });
+      total_all   = _.sumBy(arr_produk, function(o) { return parseFloat(parseInt(o.harga) * parseInt(o.qty)) });
+      total_final = total_all - (total_all * (($('[name="diskon"]').val() == '' ? 0 : $('[name="diskon"]').val()) / 100))
       $('#span-total-harga').html(angka(total_harga))
       $('#span-total-qty').html(angka(total_qty))
       $('#span-total-all').html(angka(total_all))
       $('#span-total-all-2').html(angka(total_all))
+      $('#span-total-final').html(angka(total_final))
+  }
+
+  function batal()
+  {
+    arr_produk = []
+    refresh()
+    $('#form-order')[0].reset()
+    $('#form-diskon')[0].reset()
+    $('#form-cash')[0].reset()
+    toastr.success('Data Dihapus')
   }
 
   function cari_produk()
@@ -75,6 +92,9 @@
            "ajax": {
                "url": `<?php echo base_url() ?>/mproduk/getall`,
                "type": "POST",
+               "data": {
+                 usestok  : 1
+               },
            },
            "columns": [
              { "title" : "No", "render" : (data,type,row,meta) => {return meta.row + 1}, "width" : "5%" },
@@ -142,76 +162,37 @@
     refresh()
   }
 
-  function add_data() {
-      state = 'add';
-      $('#form-data')[0].reset();
-      $('#img-preview').remove();
-      $('.select2').trigger('change');
-      $('#modal-data').modal('show');
-      $('#modal-data .modal-title').text('Tambah Data');
-  }
-
-  function edit_data(id) {
-      state = 'update';
-      $('#form-data')[0].reset();
-      $('#img-preview').remove();
-      $.post(`${apiurl}/getrow`, {id : id}, function(data) {
-        $.each(data, function(i,v) {
-          $(`#form-data [name="${i}"]`).val(data[i])
-        })
-        $('.select2').trigger('change');
-        $('#modal-data').modal('show');
-        $('#modal-data .modal-title').text('Edit Data');
-      },'json');
-  }
-
-  function savedata() {
-      if (
-        !$('#form-data [name="tgl"]').val() || $('#form-data [name="tgl"]').val() == "" ||
-        !$('#form-data [name="ref_user"]').val() || $('#form-data [name="ref_user"]').val() == "" ||
-        !$('#form-data [name="kode"]').val() || $('#form-data [name="kode"]').val() == ""
-      )
-      {
-        toastr.error('Lengkapi Data');
-        return true
-      }
-      var url;
-      if (state == 'add') {
-          url = `${apiurl}/savedata`;
-      } else {
-          url = `${apiurl}/updatedata`;
-      }
-      var datainput = $('#form-data').serializeArray()
-      datainput.push({
-          "name": "arr_produk",
-          "value": JSON.stringify(arr_produk)
-      });
-      $.post(url, datainput, function(data) {
-        if (data.status == 'success') {
-            arr_produk = []
-            refresh();
-            toastr.success('Data Berhasil Disimpan')
-        } else if (data.status == 'fail') {
-            arr_produk = []
-            refresh();
-            toastr.success('No Changed')
-        }
-      },'json');
-  }
-
-  function hapus_data(id) {
+  function ask_save_data() {
+    if (
+      !$('#form-data [name="tgl"]').val() || $('#form-data [name="tgl"]').val() == "" ||
+      !$('#form-data [name="ref_user"]').val() || $('#form-data [name="ref_user"]').val() == "" ||
+      !$('#form-data [name="kode"]').val() || $('#form-data [name="kode"]').val() == "" ||
+      !$('#form-cash [name="cash"]').val() || $('#form-cash [name="cash"]').val() == "" ||
+      arr_produk.length == 0
+    )
+    {
+      toastr.error('Lengkapi Data');
+      return true
+    }
+    if (
+      $('#form-cash [name="cash"]').val() < total_final
+    )
+    {
+      toastr.error('Cash Tidak Cukup');
+      return true
+    }
     $.confirm({
       closeIcon: true,
-      icon: 'fa fa-trash',
-      title: 'Hapus data ',
-      content: 'Yakin Hapus data ?',
+      icon: 'fa fa-paper-plane',
+      title: 'Proses Transaksi',
+      content: 'Yakin Proses Transaksi ?',
       buttons: {
         yes: {
           text: 'Ya',
           btnClass: 'btn-success',
           keys: ['enter'],
           action: function(){
-            do_delete_data(id)
+            savedata()
           }
         },
         no: {
@@ -222,28 +203,36 @@
     })
   }
 
-  function do_delete_data(id) {
-      $.post(`${apiurl}/deletedata`, {id : id}, function(data) {
+  function savedata() {
+      var url = `${apiurl}/savedata`;
+      var datainput = $('#form-data').serializeArray()
+      datainput.push(
+        { "name": "arr_produk", "value": JSON.stringify(arr_produk)},
+        { "name": "total_harga", "value": total_harga},
+        { "name": "total_qty", "value": total_qty},
+        { "name": "total_all", "value": total_all},
+        { "name": "diskon", "value": $('[name="diskon"]').val()},
+        { "name": "total", "value": total_final},
+        { "name": "ket", "value": $('[name="ket"]').val()},
+        { "name": "cash", "value": $('#form-cash [name="cash"]').val()},
+        { "name": "cashback", "value": $('#form-cash [name="cashback"]').val()},
+      );
+      $.post(url, datainput, function(data) {
         if (data.status == 'success') {
-          refresh()
-          toastr.success('Data Berhasil Dihapus')
-          $('#modal-data').modal('hide');
-        } else {
-          refresh()
-          $('#modal-data').modal('hide');
+            arr_produk = []
+            refresh();
+            toastr.success('Data Berhasil Disimpan')
+            $('#form-order')[0].reset()
+            $('#form-diskon')[0].reset()
+            $('#form-cash')[0].reset()
+            genkodeinvoice()
+        } else if (data.status == 'fail') {
+            arr_produk = []
+            refresh();
+            toastr.success('No Changed')
         }
       },'json');
   }
-
-  // $('#form-order [name="kodeproduk"]').on('keyup', function(){
-  //   setTimeout(function(){
-  //     $('#form-order [name="ref_produk"]').val('')
-  //     $('#form-order [name="produk"]').val('')
-  //     $('#form-order [name="harga"]').val('')
-  //     $('#form-order [name="qty"]').val('')
-  //     $('#form-order [name="total"]').val('')
-  //   },150)
-  // })
 
   $('#form-order [name="qty"]').on('keyup', function(){
     setTimeout(function(){
@@ -278,6 +267,26 @@
     if(e.which == 13) {
       save_temp()
     }
+  })
+
+  $('[name="diskon"]').on('keyup', function(e){
+    setTimeout(function(){
+      total_final = total_all - (total_all * ($('[name="diskon"]').val() / 100))
+      $('#span-total-final').html(angka(total_final))
+    })
+    setTimeout(function(){
+      if ($('[name="diskon"]').val() > 100) {
+        $('[name="diskon"]').val('100')
+      } else if ($('[name="diskon"]').val() < 0) {
+        $('[name="diskon"]').val('0')
+      }
+    })
+  })
+
+  $('#form-cash [name="cash"]').on('keyup', function(e){
+    setTimeout(function(){
+      $('#form-cash [name="cashback"]').val($('#form-cash [name="cash"]').val() - total_final)
+    })
   })
 
   function pilih_data(id, kode, nama, harga)

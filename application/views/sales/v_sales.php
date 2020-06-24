@@ -13,39 +13,41 @@
           <div class="col-lg-12">
             <div class="card">
               <div class="card-header">
-                <div class="row">
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <label>Kasir</label>
-                      <input type="text" class="form-control" name="kasir" value="<?php echo sessdata('nama') ?>" readonly>
-                      <input type="hidden" class="form-control" name="ref_user" value="<?php echo sessdata('iduser') ?>">
+                <form id="form-data">
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label>Kasir</label>
+                        <input type="text" class="form-control" name="kasir" value="<?php echo sessdata('nama') ?>" readonly>
+                        <input type="hidden" class="form-control" name="ref_user" value="<?php echo sessdata('iduser') ?>">
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label>No. Invoice</label>
+                        <input type="text" class="form-control" name="kode" readonly>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label>Tanggal Invoice</label>
+                        <input type="text" class="form-control datepicker" name="tgl">
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label>Pelanggan</label>
+                        <select class="form-control select2" name="ref_customer">
+                          <option value=""></option>
+                          <option value="0">- Umum -</option>
+                          <?php foreach ($cust as $i => $v): ?>
+                            <option value="<?php echo $v['id'] ?>"><?php echo $v['nama'] ?></option>
+                          <?php endforeach; ?>
+                        </select>
+                      </div>
                     </div>
                   </div>
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <label>No. Invoice</label>
-                      <input type="text" class="form-control" name="kode" readonly>
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <label>Tanggal Invoice</label>
-                      <input type="text" class="form-control datepicker" name="tgl">
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <label>Pelanggan</label>
-                      <select class="form-control select2" name="ref_customer">
-                        <option value=""></option>
-                        <option value="0">- Umum -</option>
-                        <?php foreach ($cust as $i => $v): ?>
-                          <option value="<?php echo $v['id'] ?>"><?php echo $v['nama'] ?></option>
-                        <?php endforeach; ?>
-                      </select>
-                    </div>
-                  </div>
-                </div>
+                </form>
               </div>
               <div class="card-body">
                 <div class="row">
@@ -102,47 +104,65 @@
                       </table>
                     </div>
                     <div class="row mt-4">
-                      <div class="col-md-6">
-                        <table class="table table-bordered table-striped" id="table-total">
-                          <tfoot>
-                            <tr>
-                              <th width="50%">Subtotal</th>
-                              <th class="text-right"><span id="span-total-all-2"></span></th>
-                            </tr>
-                            <tr>
-                              <th>Diskon</th>
-                              <th class="text-right">
-                                <input type="number" class="form-control" name="diskon" max="100">
-                              </th>
-                            </tr>
-                            <tr>
-                              <th>Catatan</th>
-                              <th class="text-right">
-                                <textarea type="text" class="form-control" name="note" rows="2"></textarea>
-                              </th>
-                            </tr>
-                            <tr>
-                              <th>Total Pembelian</th>
-                              <th class="text-right">Total Pembelian</th>
-                            </tr>
-                          </tfoot>
-                        </table>
+                      <div class="col-md-5">
+                        <form id="form-diskon">
+                          <table class="table table-bordered table-striped" id="table-total">
+                            <tfoot>
+                              <tr>
+                                <th width="50%">Subtotal</th>
+                                <th class="text-right"><span id="span-total-all-2"></span></th>
+                              </tr>
+                              <tr>
+                                <th>Diskon ( % )</th>
+                                <th class="text-right">
+                                  <input type="number" class="form-control" name="diskon" max="100">
+                                </th>
+                              </tr>
+                              <tr>
+                                <th>Catatan</th>
+                                <th class="text-right">
+                                  <textarea type="text" class="form-control" name="ket" rows="2"></textarea>
+                                </th>
+                              </tr>
+                              <tr>
+                                <th>Total Pembelian</th>
+                                <th class="text-right"><span id="span-total-final"></span></th>
+                              </tr>
+                            </tfoot>
+                          </table>
+                        </form>
                       </div>
-                      <div class="col-md-4">
+                      <div class="col-md-5">
+                        <form id="form-cash">
+                          <table class="table table-bordered table-striped" id="table-total">
+                            <tfoot>
+                              <tr>
+                                <th>Bayar</th>
+                                <th class="text-right">
+                                  <input type="number" class="form-control" name="cash">
+                                </th>
+                              </tr>
+                              <tr>
+                                <th>Kembalian</th>
+                                <th class="text-right">
+                                  <input type="number" class="form-control" name="cashback" readonly>
+                                </th>
+                              </tr>
+                            </tfoot>
+                          </table>
+                        </form>
+                      </div>
+                      <div class="col-md-2">
                         <div class="row mb-4">
-                          <button type="button" class="btn btn-lg btn-warning btn-flat"><i class="fa fa-sync"></i> Cancel</button>
+                          <button type="button" class="btn btn-lg btn-warning btn-flat" onclick="batal()"><i class="fa fa-sync"></i> Cancel</button>
                         </div>
                         <div class="row">
-                          <button type="button" class="btn btn-lg btn-success btn-flat"><i class="fa fa-paper-plane"></i> Proses</button>
+                          <button type="button" class="btn btn-lg btn-success btn-flat" onclick="ask_save_data()"><i class="fa fa-paper-plane"></i> Proses</button>
                         </div>
-
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="card-footer">
-
               </div>
             </div>
           </div>

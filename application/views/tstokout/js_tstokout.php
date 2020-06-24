@@ -12,6 +12,8 @@
      active_anak(path)
      select2()
      dpicker()
+     $('[name="tglawal"]').datepicker( "setDate" , (moment().format('DD MMM YYYY')));
+     $('[name="tglakhir"]').datepicker( "setDate" , (moment().add(5, 'days').format('DD MMM YYYY')));
    })
 
    function getdata() {
@@ -20,7 +22,10 @@
           "ajax": {
               "url": `${apiurl}/getall`,
               "type": "POST",
-              "data": {},
+              "data": {
+                tglawal  : function() { return $('#tglawal').val() },
+                tglakhir : function() { return $('#tglakhir').val() }
+              },
           },
           "columns": [
             { "title" : "No", "render" : (data,type,row,meta) => {return meta.row + 1}, "width" : "5%" },

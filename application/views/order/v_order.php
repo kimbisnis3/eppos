@@ -33,12 +33,12 @@
               <div class="card-header border-0">
                 <div class="float-left">
                   <button type="button" class="btn btn-success btn-flat" name="button" onclick="refresh()"><i class="fa fa-sync"></i> Refresh</button>
-                  <button type="button" class="btn btn-primary btn-flat elm-add" name="button" onclick="add_data()"><i class="fa fa-plus"></i> Tambah</button>
+                  <!-- <button type="button" class="btn btn-primary btn-flat elm-add" name="button" onclick="add_data()"><i class="fa fa-plus"></i> Tambah</button> -->
                 </div>
               </div>
               <div class="card-body">
                 <div class="table-responsive">
-                  <table class="table table-bordered" id="table"></table>
+                  <table class="table table-bordered table-hover" id="table"></table>
                 </div>
               </div>
             </div>
@@ -48,9 +48,9 @@
     </div>
   </div>
 <?php $this->load->view('_partials/foot') ?>
-<?php $this->load->view(urisegment(1).'/m_'.urisegment(1)) ?>
+<?php $this->load->view('order/m_order') ?>
 </div>
 <?php $this->load->view('_partials/js') ?>
-<?php $this->load->view(urisegment(1).'/js_'.urisegment(1)) ?>
+<?php $this->load->view('order/js_order') ?>
 </body>
 </html>

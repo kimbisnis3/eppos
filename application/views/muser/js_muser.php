@@ -25,6 +25,7 @@
             { "title" : "No", "render" : (data,type,row,meta) => {return meta.row + 1}, "width" : "5%" },
             { "title" : "ID", "data": "id", "visible" : false },
             { "title" : "Nama", "data": "nama" },
+            { "title" : "Level", "data": "level" },
             { "title" : "Email", "data": "email" },
             { "title" : "Gambar", "render" : (data,type,row,meta) => {return showimage(row.image)} },
             { "title" : "Username", "data": "username" },
@@ -106,6 +107,16 @@
   }
 
   function savedata() {
+      if (
+        !$('#form-data [name="nama"]').val() || $('#form-data [name="nama"]').val() == "" ||
+        !$('#form-data [name="username"]').val() || $('#form-data [name="username"]').val() == "" ||
+        !$('#form-data [name="password"]').val() || $('#form-data [name="password"]').val() == "" ||
+        !$('#form-data [name="ref_level"]').val() || $('#form-data [name="ref_level"]').val() == ""
+      )
+      {
+        toastr.error('Lengkapi Data');
+        return true
+      }
       var url;
       if (state == 'add') {
           url = `${apiurl}/savedata`;

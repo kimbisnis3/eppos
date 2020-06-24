@@ -21,7 +21,9 @@
               "url": `${apiurl}/getall`,
               "type": "POST",
               "data": {
-                useaktif : function() { return 1 }
+                useaktif : function() { return 1 },
+                filter_ktg  : function() { return $('[name="filter_ref_ktg"]').val() },
+                filter_satuan : function() { return $('[name="filter_ref_satuan"]').val() }
               },
           },
           "columns": [
@@ -32,7 +34,7 @@
             { "title" : "Nama", "data": "nama" },
             { "title" : "Kategori", "data": "mktgproduk_nama" },
             { "title" : "Harga ", "render" : (data,type,row,meta) => {return `<div class="text-right">${angka(row.harga)}</div>` } },
-            { "title" : "Gambar", "width" : "4%", "render" : (data,type,row,meta) => { return `<div class="text-center"><button type="button" class="btn btn-primary" onclick="img_data(${row.id})"><i class="fa fa-image"></i></button></div>` } },
+            { "title" : "Gambar", "width" : "4%", "render" : (data,type,row,meta) => { return `<div class="text-center"><button type="button" class="btn btn-flat btn-primary" onclick="img_data(${row.id})"><i class="fa fa-image"></i></button></div>` } },
             { "title" : "Stok ", "render" : (data,type,row,meta) => {return `<div class="text-right">${row.stok}</div>` } },
             { "title" : "Satuan", "data": "satuan" },
             { "title" : "Keterangan", "data": "ket" },

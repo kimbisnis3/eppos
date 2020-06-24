@@ -33,7 +33,7 @@ class Company extends CI_Controller {
     function updatedata()
     {
         if (!empty($_FILES['file_image']['name'])) {
-            $path = $this->libre->goUpload('file_image','img-'.time(),$this->foldername);
+            $path = $this->libre->upload('file_image','img-'.time(),$this->foldername);
             $d['image'] = $path;
             $oldpath = epost('image');
             @unlink(".".$oldpath);
@@ -42,7 +42,7 @@ class Company extends CI_Controller {
         }
 
         if (!empty($_FILES['file_splash']['name'])) {
-            $path = $this->libre->goUpload('file_splash','img-'.time(),$this->foldername);
+            $path = $this->libre->upload('file_splash','img-'.time(),$this->foldername);
             $d['splash'] = $path;
             $oldpath = epost('splash');
             @unlink(".".$oldpath);

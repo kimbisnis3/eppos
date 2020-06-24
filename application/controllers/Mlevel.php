@@ -81,7 +81,7 @@ class Mlevel extends CI_Controller {
         $d['nama']  = epost('nama');
         $d['ket']   = epost('ket');
         $result     = db_insert($this->table,$d);
-        $r['sukses']= $result ? 'success' : 'fail' ;
+        $r['status']= $result ? 'success' : 'fail' ;
         echo json_encode($r);
     }
 
@@ -98,7 +98,7 @@ class Mlevel extends CI_Controller {
         $d['ket']       = epost('ket');
         $w['id']        = epost('id');
         $result         = db_update($this->table,$d,$w);
-        $r['sukses']    = $result ? 'success' : 'fail' ;
+        $r['status']    = $result ? 'success' : 'fail' ;
         echo json_encode($r);
     }
 
@@ -106,7 +106,7 @@ class Mlevel extends CI_Controller {
     {
         $w['id']    = epost('id');
         $result     = db_delete($this->table,$w);
-        $r['sukses']= $result ? 'success' : 'fail' ;
+        $r['status']= $result ? 'success' : 'fail' ;
         echo json_encode($r);
     }
 

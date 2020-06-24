@@ -22,6 +22,8 @@ class Tstokin extends CI_Controller {
 
     public function getall()
     {
+        $tglawal   = todate(epost('tglawal'));
+        $tglakhir  = todate(epost('tglakhir'));
         $q = "SELECT
                 tstokin.*,
                 mproduk.kode kodeproduk,
@@ -37,6 +39,9 @@ class Tstokin extends CI_Controller {
               LEFT JOIN msatuan ON msatuan.id = mproduk.ref_satuan
               WHERE 1=1
               ";
+        if ($tglawal && $tglakhir) {
+          $q .= " AND tstokin.tgl BETWEEN '{$tglawal}' AND '{$tglakhir}'";
+        }
         $q .= " ORDER BY tstokin.id DESC";
         $result       = db_query($q)->result();
         $r['data']    = $result;

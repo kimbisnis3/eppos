@@ -23,8 +23,10 @@ class Mproduk extends CI_Controller {
 
     public function getall()
     {
-        $limit        = epost('limit');
         $useaktif     = epost('useaktif');
+        $usestok      = epost('usestok');
+        $ktg          = epost('filter_ktg');
+        $satuan       = epost('filter_satuan');
         $q = "SELECT
                 mproduk.*,
                 msatuan.nama satuan,
@@ -35,8 +37,14 @@ class Mproduk extends CI_Controller {
               LEFT JOIN msatuan ON msatuan.id = mproduk.ref_satuan
               WHERE 1=1
               ";
-        if ($limit != null || $limit != '') {
-          $q .= " LIMIT $limit";
+        if ($usestok != null || $usestok != '') {
+          $q .= " AND mproduk.stok > 0";
+        }
+        if ($ktg != null || $ktg != '') {
+          $q .= " AND mproduk.ref_ktgproduk = '$ktg'";
+        }
+        if ($satuan != null || $satuan != '') {
+          $q .= " AND mproduk.ref_satuan = '$satuan'";
         }
         $q .= " ORDER BY mproduk.nama ASC";
         $result       = db_query($q)->result();

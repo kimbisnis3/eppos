@@ -13,6 +13,34 @@
           <div class="col-lg-12">
             <div class="card">
               <div class="card-header border-0">
+                <div class="row">
+                  <div class="col-sm-3 col-xs-3 col-md-3">
+                    <div class="form-group">
+                      <label>Kategori</label>
+                      <select class="form-control select2" name="filter_ref_ktg">
+                        <option value=""></option>
+                        <?php foreach ($ktgproduk as $i => $v): ?>
+                          <option value="<?php echo $v['id']; ?>"><?php echo $v['nama']; ?></option>
+                        <?php endforeach; ?>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-sm-3 col-xs-3 col-md-3">
+                    <div class="form-group">
+                      <label>Satuan</label>
+                      <select class="form-control select2" name="filter_ref_satuan">
+                        <option value=""></option>
+                        <?php foreach ($satuan as $i => $v): ?>
+                          <option value="<?php echo $v['id']; ?>"><?php echo $v['nama']; ?></option>
+                        <?php endforeach; ?>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header border-0">
                 <div class="float-left">
                   <button type="button" class="btn btn-success btn-flat" name="button" onclick="refresh()"><i class="fa fa-sync"></i> Refresh</button>
                   <button type="button" class="btn btn-primary btn-flat elm-add" name="button" onclick="add_data()"><i class="fa fa-plus"></i> Tambah</button>

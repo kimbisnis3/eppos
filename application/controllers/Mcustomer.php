@@ -58,7 +58,7 @@ class Mcustomer extends CI_Controller {
     function updatedata()
     {
         if (!empty($_FILES['file_image']['name'])) {
-            $path = $this->libre->goUpload('file_image','img-'.time(),$this->foldername);
+            $path = $this->libre->upload('file_image','img-'.time(),$this->foldername);
             $d['image'] = $path;
             $oldpath = epost('image');
             @unlink(".".$oldpath);

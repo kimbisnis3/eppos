@@ -26,10 +26,12 @@ class Muser extends CI_Controller {
     public function getall()
     {
         $q = "SELECT
-                muser.*
+                muser.*,
+                mlevel.nama level
             FROM
                 muser
-            WHERE super IS NOT TRUE";
+            LEFT JOIN mlevel ON mlevel.id = muser.ref_level
+            WHERE muser.super IS NOT TRUE";
         $result     = $this->db->query($q)->result();
         echo json_encode(array('data' => $result));
     }
@@ -50,7 +52,7 @@ class Muser extends CI_Controller {
           $r['sukses'] = 'duplicated' ;
           echo json_encode($r);
         } else {
-          $image = $this->libre->goUpload('image','img-'.time(),$this->foldername);
+          $image = $this->libre->upload('image','img-'.time(),$this->foldername);
           $d['image']     = $image;
           $result = db_insert($this->table,$d);
           $r['sukses'] = $result ? 'success' : 'fail' ;
@@ -68,7 +70,7 @@ class Muser extends CI_Controller {
     function updatedata()
     {
         if (!empty($_FILES['image']['name'])) {
-            $path = $this->libre->goUpload('image','img-'.time(),$this->foldername);
+            $path = $this->libre->upload('image','img-'.time(),$this->foldername);
             $d['image'] = $path;
             $oldpath = epost('path');
             @unlink(".".$oldpath);

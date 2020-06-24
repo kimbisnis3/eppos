@@ -47,7 +47,10 @@ class Sales extends CI_Controller {
 
     public function getproduk_bykode()
     {
-        $data   = db_get_where('mproduk', array('kode' => eget('kode')))->row();
+        $data   = db_get_where('mproduk', array(
+          'kode' => eget('kode'),
+          'stok >' => 0
+        ))->row();
         echo json_encode($data);
     }
 
@@ -61,6 +64,7 @@ class Sales extends CI_Controller {
 
     public function savedata()
     {
+        $this->db->trans_start();
         $d['useri']     = sessdata('username');
         $d['datei']     = sekarang();
         $d['ref_cust']  = epost('ref_customer');
@@ -68,7 +72,10 @@ class Sales extends CI_Controller {
         $d['kode']      = epost('kode');
         $d['tgl']       = todate(epost('tgl'));
         $d['total']     = epost('total');
-        $d['status']    = 1;
+        $d['diskon']    = epost('diskon');
+        $d['ket']       = epost('ket');
+        $d['cash']      = epost('cash');
+        $d['cashback']  = epost('cashback');
         $arr_produk     = epost('arr_produk');
         $result         = db_insert($this->table,$d);
         $order_id       = $this->db->insert_id();
@@ -76,20 +83,34 @@ class Sales extends CI_Controller {
           db_delete('torderdet',array('ref_order' => $order_id));
           foreach (json_decode($arr_produk) as $r) {
               $row['ref_order']   = $order_id;
-              $row['ref_produk']  = $r->idbrg;
-              $row['qty']         = $r->qtybeli;
-              $row['harga']       = $r->hrgbrgasli;
-              $row['hrgbayar']    = $r->hrgbayar;
-              $row['diskon']      = $r->diskon;
-              $row['ket']         = $r->catatan;
-              $row['total']       = $r->hrgbayar * $r->qtybeli;
+              $row['ref_produk']  = $r->ref_produk;
+              $row['qty']         = $r->qty;
+              $row['harga']       = $r->harga;
+              $row['total']       = $r->harga * $r->qty;
               db_insert('torderdet',$row);
+              $this->cutstok($r->ref_produk, $r->qty);
           }
         }
-        $res['sukses']    = $result ? 'success' : 'fail';
-        $res['code']      = $result ? '200' : '400';
-        $res['order_id']  = $order_id;
+        if ($this->db->trans_status() === FALSE) {
+          $this->db->trans_rollback();
+          $res['status']    = 'fail';
+        }
+        else {
+          $this->db->trans_commit();
+          $res['status']    = 'success';
+          $res['order_id']  = $order_id;
+        }
         echo json_encode($res);
     }
 
+    public function cutstok($ref_produk, $qty)
+    {
+      $stokada    = db_get_where('mproduk', array('id' => $ref_produk))->row_array()['stok'];
+      $result     = db_update('mproduk', array('stok' => $stokada - $qty), array('id' => $ref_produk));
+    }
+
+    function cetak()
+    {
+      $this->load->view('sales/p_sales');
+    }
 }
