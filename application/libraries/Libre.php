@@ -68,11 +68,20 @@ class libre
         }
     }
 
-    public function cetak($query, $filename, $title, $type = 'print')
+    public function cetak($query, $filename, $title, $type = 'print', $titlerow = '')
     {
         $ci =& get_instance();
         $b = $ci->db->query($query)->result_array();
         $a = (count($b) > 0) ? $b[0] : $ci->db->query($query)->row_array() ;
+        if ($type == 'xls') {
+          $extensi = 'xls';
+          header("Content-type: application/octet-stream");
+          header("Content-Disposition: attachment; filename=" . $filename . "." . $extensi);
+          header("Pragma: no-cache");
+          header("Expires: 0");
+        } elseif ($type == 'print') {
+          echo '<body onload="window.print()">';
+        }
         echo '
         <style>
         table {
@@ -88,21 +97,19 @@ class libre
         }
         </style>';
         echo '<title>'.$title.'</title>';
-        if ($type == 'xls') {
-          $extensi = 'xls';
-          header("Content-type: application/octet-stream");
-          header("Content-Disposition: attachment; filename=" . $filename . "." . $extensi);
-          header("Pragma: no-cache");
-          header("Expires: 0");
-        } elseif ($type == 'print') {
-          echo '<body onload="window.print()">';
-        }
         echo '
 	      <table>
 	      <tr><td colspan="16"><font size="5"><strong>' . $title . '</strong></font></td></tr>
 	      <tr><td colspan="16">Tanggal Cetak : '. date('d M Y, H:i:s') .'</td></tr>
 	      <tr><td colspan="16"></td></tr>
 	      </table> ';
+        if ($titlerow) {
+          echo '
+  	      <table>
+          <tr><td colspan="16"></td></tr>
+  	      <tr><td colspan="16"><font size="4"><strong>'. $titlerow .'</strong></font></td></tr>
+  	      </table> ';
+        }
         echo '
 	      <table class="main-table">
 	      <tr bgcolor="#D7EDE1" >' ;

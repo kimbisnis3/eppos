@@ -98,7 +98,8 @@ class Sales extends CI_Controller {
         else {
           $this->db->trans_commit();
           $res['status']    = 'success';
-          $res['order_id']  = $order_id;
+          // $res['order_id']  = $order_id;
+          $res['order_kode']= epost('kode');
         }
         echo json_encode($res);
     }
@@ -111,6 +112,37 @@ class Sales extends CI_Controller {
 
     function cetak()
     {
-      $this->load->view('sales/p_sales');
+      $kode         = eget('kode');
+      // $order        = db_get_where('torder', array('kode' => $kode))->row_array();
+      // $order_det    = db_get_where('torderdet', array('ref_order' => $order['id']))->result_array();
+      $q_trans = "SELECT
+              torder.*,
+              mcustomer.nama namacustomer,
+              muser.nama kasir
+            FROM
+              torder
+            LEFT JOIN mcustomer ON mcustomer.id = torder.ref_cust
+            LEFT JOIN muser ON muser.id = torder.ref_user
+            WHERE 1 = 1";
+      $q_trans .= " AND torder.kode = '$kode'";
+      $ord      = db_query($q_trans)->row_array();
+      $idorder  = $ord['id'];
+      $q = "SELECT
+              torderdet.*,
+              torder.tgl,
+              torder.tglorder,
+              mproduk.kode kodeproduk,
+              mproduk.nama namaproduk,
+              mproduk.image imageproduk
+            FROM
+              torderdet
+            LEFT JOIN torder ON torder.id = torderdet.ref_order
+            LEFT JOIN mproduk ON torderdet.ref_produk = mproduk.id
+            WHERE 1 = 1
+            AND torderdet.ref_order = '$idorder'";
+      $ord_det      = db_query($q)->result_array();
+      $d['ord']     = $ord;
+      $d['ord_det'] = $ord_det;
+      $this->load->view('sales/p_sales', $d);
     }
 }

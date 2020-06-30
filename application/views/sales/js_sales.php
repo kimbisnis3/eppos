@@ -226,6 +226,10 @@
             $('#form-diskon')[0].reset()
             $('#form-cash')[0].reset()
             genkodeinvoice()
+            setTimeout(function(){
+              window.open(`sales/cetak?kode=${data.order_kode}`, "_blank");
+            })
+            // console.log(data.order_kode)
         } else if (data.status == 'fail') {
             arr_produk = []
             refresh();

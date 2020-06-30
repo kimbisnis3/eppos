@@ -25,13 +25,7 @@ class Order extends CI_Controller {
         $idcust = epost('idcust');
         $q = "SELECT
                 torder.*,
-                mcustomer.nama namacustomer,
-                (SELECT
-                  	mproduk.image
-                  FROM
-                  	torderdet
-                  LEFT JOIN mproduk ON mproduk.id = torderdet.ref_produk
-                  WHERE torderdet.ref_order = torder.id LIMIT 1) img_produk
+                mcustomer.nama namacustomer
               FROM
                 torder
               LEFT JOIN mcustomer ON mcustomer.id = torder.ref_cust

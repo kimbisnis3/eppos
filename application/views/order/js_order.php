@@ -41,7 +41,7 @@
                <button type="button" class="btn btn-warning btn-flat btn-sm invisible" name="button" onclick="edit_data(${row.id})"><i class="fas fa-edit"></i></button>
                <button type="button" class="btn btn-danger btn-flat btn-sm invisible" name="button" onclick="hapus_data(${row.id})"><i class="fa fa-trash"></i></button>
                <button type="button" class="btn btn-success btn-flat btn-sm" name="button" onclick="detail_data(${row.id})"><i class="fa fa-info-circle"></i></button>
-               <button type="button" class="btn btn-primary btn-flat btn-sm" name="button" onclick="cetak_data(${row.id})"><i class="fa fa-print"></i></button>
+               <button type="button" class="btn btn-primary btn-flat btn-sm" name="button" onclick="cetak_data(${row.kode})"><i class="fa fa-print"></i></button>
                `
             }},
           ]
@@ -91,6 +91,13 @@
    function refresh() {
       table.ajax.reload(null, false);
       idx = -1;
+  }
+
+  function cetak_data(kode)
+  {
+    setTimeout(function(){
+      window.open(`sales/cetak?kode=${kode}`, "_blank");
+    })
   }
 
 </script>

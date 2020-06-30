@@ -56,7 +56,7 @@ class Mlevel extends CI_Controller {
               		AND mmenu.id IN ( SELECT makses.ref_menu FROM makses WHERE ref_level = '$ref_level' )
               	) x
               ORDER BY
-              	urutan ASC";
+              	id DESC";
         $result  = db_query($q)->result();
         echo json_encode(array('data' => $result));
     }

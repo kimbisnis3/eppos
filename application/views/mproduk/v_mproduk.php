@@ -44,7 +44,7 @@
                 <div class="float-left">
                   <button type="button" class="btn btn-success btn-flat" name="button" onclick="refresh()"><i class="fa fa-sync"></i> Refresh</button>
                   <button type="button" class="btn btn-primary btn-flat elm-add" name="button" onclick="add_data()"><i class="fa fa-plus"></i> Tambah</button>
-                  <button type="button" class="btn btn-warning btn-flat" name="button" onclick="exp('uploads/template/template_csv_produk.csv')" id="btn_csv"><i class="fa fa-download"></i> Import</button>
+                  <!-- <button type="button" class="btn btn-warning btn-flat" name="button" onclick="exp('uploads/template/template_csv_produk.csv')" id="btn_csv"><i class="fa fa-download"></i> Import</button> -->
                 </div>
               </div>
               <div class="invisible">

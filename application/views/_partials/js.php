@@ -10,6 +10,12 @@
        }
     }
 
+    function btn_add_set() {
+      if (akses_add != 1) {
+        $('.btn-add').remove()
+      }
+    }
+
     $(document).keypress(function(e) {
       if(e.which == 13) {
         if ($('#modal-data').is(':visible')) {
