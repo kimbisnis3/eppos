@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <?php $this->load->view('_partials/head.php') ?>
@@ -7,11 +6,9 @@
   <div class="login-logo">
     <a><b><?php echo $this->libre->companydata()->nama; ?></b></a>
   </div>
-  <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
-      <p class="login-box-msg">Sign in</p>
-
+      <p class="login-box-msg">Sign In</p>
       <form id="form-data">
         <div class="input-group mb-3">
           <input type="text" class="form-control" placeholder="Username" name="username">
@@ -30,28 +27,22 @@
           </div>
         </div>
         <div class="row">
-          <!-- /.col -->
           <div class="col-12">
-            <button type="button" class="btn btn-primary btn-block btn-flat" onclick="login()">Sign In</button>
+            <button type="button" class="btn btn-primary btn-block btn-flat btn-login" onclick="login()">Sign In</button>
           </div>
-          <!-- /.col -->
         </div>
       </form>
 
       <div class="social-auth-links text-center mb-3">
         <p></p>
       </div>
-      <!-- /.social-auth-links -->
-
       <p class="mb-1">
       </p>
       <p class="mb-0">
       </p>
     </div>
-    <!-- /.login-card-body -->
   </div>
 </div>
-<!-- /.login-box -->
 <?php $this->load->view('_partials/js.php') ?>
 <script type="text/javascript">
 	function login() {

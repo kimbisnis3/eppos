@@ -34,11 +34,10 @@
             { "title" : "Nama", "data": "nama" },
             { "title" : "Kategori", "data": "mktgproduk_nama" },
             { "title" : "Harga ", "render" : (data,type,row,meta) => {return `<div class="text-right">${angka(row.harga)}</div>` } },
-            { "title" : "Gambar", "width" : "4%", "render" : (data,type,row,meta) => { return `<div class="text-center"><button type="button" class="btn btn-flat btn-primary" onclick="img_data(${row.id})"><i class="fa fa-image"></i></button></div>` } },
             { "title" : "Stok ", "render" : (data,type,row,meta) => {return `<div class="text-right">${row.stok}</div>` } },
             { "title" : "Satuan", "data": "satuan" },
             { "title" : "Keterangan", "data": "ket" },
-            // { "title" : "Status", "render" : (data,type,row,meta) => { return setstatus(row.aktif, 'Aktif', 'Tidak Aktif') } },
+            { "title" : "Gambar", "width" : "4%", "render" : (data,type,row,meta) => { return `<div class="text-center"><button type="button" class="btn btn-flat btn-primary" onclick="img_data(${row.id})"><i class="fa fa-image"></i></button></div>` } },
             { "title" : "Opsi", "width" : "8%", "render" : (data,type,row,meta) =>
             {
               return `

@@ -108,7 +108,7 @@
              { "title" : "Opsi", "width" : "5%", "render" : (data,type,row,meta) =>
              {
                return `
-                <button type="button" class="btn btn-warning btn-flat btn-sm" name="button" onclick="pilih_data('${row.id}', '${row.kode}', '${row.nama}', '${row.harga}')"><i class="fas fa-check"></i></button>`
+                <button type="button" class="btn btn-warning btn-flat btn-sm" name="button" onclick="pilih_data('${row.id}', '${row.kode}', '${row.nama}', '${row.harga}','${row.stok}')"><i class="fas fa-check"></i></button>`
              }},
            ]
       });
@@ -129,6 +129,11 @@
       toastr.error('Lengkapi Data');
       return true
     }
+    // if (parseInt($('#form-order [name="qty"]').val()) >= parseInt($('#form-order [name="qty"]').attr('data-maxstok'))) {
+    //   $('#form-order [name="qty"]').val(parseInt($('#form-order [name="qty"]').attr('data-maxstok')))
+    //   toastr.error('Jumlah Melebihi Stok');
+    //   return true
+    // }
     let pr_exs  = arr_produk.filter(function(a){ return a['ref_produk'] == $('#form-order [name="ref_produk"]').val() })
     if (pr_exs.length > 0) {
       arr_produk.push({
@@ -253,15 +258,17 @@
           $('#form-order [name="kodeproduk_real"]').val(data.kode)
           $('#form-order [name="produk"]').val(data.nama)
           $('#form-order [name="harga"]').val(data.harga)
-          $('#form-order [name="qty"]').val(1)
           $('#form-order [name="total"]').val(1 * data.harga)
+          $('#form-order [name="qty"]').val(1)
+          $('#form-order [name="qty"]').attr('data-maxstok', data.stok)
         } else {
           $('#form-order [name="ref_produk"]').val('')
           $('#form-order [name="kodeproduk_real"]').val('')
           $('#form-order [name="produk"]').val('')
           $('#form-order [name="harga"]').val('')
-          $('#form-order [name="qty"]').val('')
           $('#form-order [name="total"]').val('')
+          $('#form-order [name="qty"]').val('')
+          $('#form-order [name="qty"]').removeAttr('data-maxstok')
         }
       },'json');
     }
@@ -293,16 +300,29 @@
     })
   })
 
-  function pilih_data(id, kode, nama, harga)
+  function pilih_data(id, kode, nama, harga, stok)
   {
     $('#form-order [name="ref_produk"]').val(id)
     $('#form-order [name="kodeproduk"]').val(kode)
     $('#form-order [name="kodeproduk_real"]').val(kode)
     $('#form-order [name="produk"]').val(nama)
     $('#form-order [name="harga"]').val(harga)
-    $('#form-order [name="qty"]').val(1)
     $('#form-order [name="total"]').val(1 * harga)
+    $('#form-order [name="qty"]').val(1)
+    $('#form-order [name="qty"]').attr('data-maxstok', stok)
     $('#modal-produk').modal('hide')
   }
+
+  $('#form-order [name="qty"]').on('keyup', function(e){
+    setTimeout(function(){
+      if ($('#form-order [name="ref_produk"]').val() || $('#form-order [name="ref_produk"]').val() != "") {
+        let pr  = arr_produk.filter(function(a){ return a['ref_produk'] == $('#form-order [name="ref_produk"]').val() })
+        let max = parseInt($('#form-order [name="qty"]').attr('data-maxstok'))
+        if ((parseInt($('#form-order [name="qty"]').val()) + parseInt(pr[0]['qty'])) >= max) {
+          $('#form-order [name="qty"]').val(max - parseInt(pr[0]['qty']))
+        }
+      }
+    })
+  })
 
 </script>
